@@ -70,4 +70,44 @@ const signUp = (req, res) => {
 
 }
 
-module.exports = { signUp }
+const signIn = (req, res) => {
+
+	const { email, password } = req.body;
+
+	try {
+		User.findOne({ email }, (err, result) => {
+
+			if (err) {
+				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!', status: 500 });
+			}
+
+			if (!result) {
+				return res.status(500).json({ message: 'Usuário não encontrado!', status: 500 });
+			}
+
+			if (bcrypt.compareSync(password, result.password)) {
+
+				const { _id, name, email } = result;
+
+				const token = jwt.sign({ _id, name, email }, process.env.AUTHENTICATION, { expiresIn: '1 day' });
+
+				return res.status(200).json({
+					user: { _id, name, email },
+					token
+				});
+
+			} else {
+				return res.status(500).json({ message: 'E-mail ou senha inválidos!', status: 500 });
+			}
+
+		});
+	} catch (err) {
+		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', status: 500 });
+	}
+}
+
+const forgotPass = (req, res) => {
+
+}
+
+module.exports = { signUp, signIn, forgotPass }
