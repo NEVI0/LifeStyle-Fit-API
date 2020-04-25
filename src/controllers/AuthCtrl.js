@@ -12,19 +12,19 @@ const signUp = (req, res) => {
 	const { name, email, password, confirmPass } = req.body;
 
 	if (name == '' || name == null) {
-		return res.status(500).json({ message: 'O nome precisa ser informado!', status: 500 });
+		return res.status(500).json({ message: 'O nome precisa ser informado!' });
 	}
 
 	if (email == '' || email == null) {
-		return res.status(500).json({ message: 'O e-mail precisa ser informado!', status: 500 });
+		return res.status(500).json({ message: 'O e-mail precisa ser informado!' });
 	}
 
 	if (password == '' || password == null) {
-		return res.status(500).json({ message: 'A senha precisa ser informada!', status: 500 });
+		return res.status(500).json({ message: 'A senha precisa ser informada!' });
 	}
 
 	if (password !== confirmPass) {
-		return res.status(500).json({ message: 'As senhas não são iguais!', status: 500 });
+		return res.status(500).json({ message: 'As senhas não são iguais!' });
 	}
 
 	const cryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
@@ -34,11 +34,11 @@ const signUp = (req, res) => {
 		User.findOne({ email: email }, (err, result) => {
 
 			if (err) {
-				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!', status: 500 });
+				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!' });
 			}
 
 			if (result) {
-				return res.status(500).json({ message: 'Um usuário com este e-mail já existe!', status: 500 });
+				return res.status(500).json({ message: 'Um usuário com este e-mail já existe!' });
 			} else {
 			
 				User.create({
@@ -46,7 +46,7 @@ const signUp = (req, res) => {
 				}, (err, { _id, name, email }) => {
 
 					if (err) {
-						return res.status(500).json({ message: 'Ocorreu um error ao tentar criar um usuário!', status: 500 });
+						return res.status(500).json({ message: 'Ocorreu um error ao tentar criar um usuário!' });
 					}
 
 					/* Envia um e-mail de boas vindas */
@@ -65,7 +65,7 @@ const signUp = (req, res) => {
 		});
 
 	} catch (err) {
-		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', status: 500 });
+		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', err });
 	}
 
 }
@@ -78,11 +78,11 @@ const signIn = (req, res) => {
 		User.findOne({ email }, (err, result) => {
 
 			if (err) {
-				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!', status: 500 });
+				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!' });
 			}
 
 			if (!result) {
-				return res.status(500).json({ message: 'Usuário não encontrado!', status: 500 });
+				return res.status(500).json({ message: 'Usuário não encontrado!' });
 			}
 
 			if (bcrypt.compareSync(password, result.password)) {
@@ -97,12 +97,12 @@ const signIn = (req, res) => {
 				});
 
 			} else {
-				return res.status(500).json({ message: 'E-mail ou senha inválidos!', status: 500 });
+				return res.status(500).json({ message: 'E-mail ou senha inválidos!' });
 			}
 
 		});
 	} catch (err) {
-		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', status: 500 });
+		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', err });
 	}
 }
 

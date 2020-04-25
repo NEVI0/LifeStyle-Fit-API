@@ -12,14 +12,14 @@ const users = (req, res) => {
 		User.find((err, result) => {
 
 			if (err) {
-				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!', status: 500 });
+				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!' });
 			}
 
 			return res.status(200).json(result);
 
 		})
 	} catch (err) {
-		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', status: 500 });
+		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', err });
 	}
 }
 
@@ -28,7 +28,7 @@ const updateAccount = (req, res) => {
 		User.findByIdAndUpdate(req.params.id, req.body, { new: true },(err, { _id, name, email }) => {
 
 			if (err) {
-				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!', status: 500 });
+				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!' });
 			}
 
 			const token = jwt.sign({ _id, name, email }, process.env.AUTHENTICATION, { expiresIn: '1 day' });
@@ -40,7 +40,7 @@ const updateAccount = (req, res) => {
 
 		});
 	} catch (err) {
-		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', status: 500 });
+		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', err });
 	}
 }
 
@@ -49,14 +49,14 @@ const deleteAccount = (req, res) => {
 		User.findByIdAndDelete(req.params.id, err => {
 
 			if (err) {
-				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!', status: 500 });
+				return res.status(500).json({ message: 'Ocorreu um error ao conectar com o Banco de Dados!' });
 			}
 
 			return res.status(200).json({ message: 'Sua conta foi deletada com sucesso!', status: 200 });
 
 		});
 	} catch (err) {
-		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', status: 500 });
+		return res.status(500).json({ message: 'Ocorreu um error no servidor. Tente novamente mais tarde!', err });
 	}
 }
 
