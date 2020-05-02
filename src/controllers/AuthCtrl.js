@@ -106,8 +106,25 @@ const signIn = (req, res) => {
 	}
 }
 
+const validateToken = (req, res) => {
+	const { token } = req.body;
+
+	if (!token) {
+		return res.status(500).json({ message: 'Você precisa estar logado na aplicação para possuir um token!' });
+	}
+
+	jwt.verify(token, process.env.AUTHENTICATION, (err) => {
+		if (err) {
+			return res.status(500).json({ message: 'Não foi possivel verificar o token informado. Tente novamente mais tarde!' });
+		}
+
+		return res.status(200).json({ isValid: true });
+	});
+
+}
+
 const forgotPass = (req, res) => {
 
 }
 
-module.exports = { signUp, signIn, forgotPass }
+module.exports = { signUp, signIn, validateToken, forgotPass }
