@@ -11,20 +11,20 @@ module.exports = (req, res, next) => {
         const token = req.body.token || req.query.token || req.headers['authorization'];
 
         if (!token) {
-            return res.status(403).json({ message: 'No token Provided', status: 403 });
+            return res.status(403).json({ message: 'Nenhum token foi informado!' });
         }
 
 		try {
 			jwt.verify(token, process.env.AUTH_SECRET, (err, decoded) => {
 				if (err) {
-					return res.status(403).json({ message: 'Failed to authenticate token', status: 403 });
+					return res.status(403).json({ message: 'Falha na autenticação do token!' });
 				} else {
 					req.decoded = decoded;
 					next();
 				}
 			});
 		} catch (err) {
-			return res.status(400).json({ err, status: 400 });
+			return res.status(400).json({ err });
 		}
 
     }
