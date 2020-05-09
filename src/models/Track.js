@@ -15,7 +15,7 @@ const pointSchema = new mongoose.Schema({
 const trackSchema = new mongoose.Schema({
 	userId: {  type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	createdAt: { type: Date, default: Date.now },
-	time: { type: Number },
+	time: { type: String },
 	type: { type: String, required: true },
 	locations: [ pointSchema ]
 });
