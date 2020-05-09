@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
         }
 
 		try {
-			jwt.verify(token, process.env.AUTH_SECRET, (err, decoded) => {
+			jwt.verify(token, process.env.AUTHENTICATION, (err, decoded) => {
 				if (err) {
 					return res.status(403).json({ message: 'Falha na autenticação do token!' });
 				} else {
