@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
-const pointSchema = new mongoose.Schema({
+const PointSchema = new mongoose.Schema({
 	timestamp: Number,
 	coords: {
 		latitude: Number,
@@ -12,12 +13,14 @@ const pointSchema = new mongoose.Schema({
 	}
 });
 
-const trackSchema = new mongoose.Schema({
+const TrackSchema = new mongoose.Schema({
 	userId: {  type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	createdAt: { type: Date, default: Date.now },
 	time: { type: String },
 	type: { type: String, required: true },
-	locations: [ pointSchema ]
+	locations: [ PointSchema ]
 });
 
-mongoose.model('Track', trackSchema);
+TrackSchema.plugin(mongoosePaginate);
+
+mongoose.model('Track', TrackSchema);
